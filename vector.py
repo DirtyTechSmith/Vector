@@ -28,6 +28,20 @@ class Vector(object):
 
         return new_vector
 
+    @classmethod
+    def distance(cls, vector_1, vector_2):
+        """
+
+        Args:
+            vector_1 (Vector):
+            vector_2 (Vector:
+
+        Returns:
+            float:
+        """
+        dist = np.linalg.norm(vector_1.numpy_array - vector_2.numpy_array)
+        return dist
+
     @property
     def numpy_array(self):
         """
@@ -141,11 +155,9 @@ class Vector(object):
 
 
 if __name__ == '__main__':
-    test_vector_1 = Vector([1.0, 2.0])
-    test_vector_2 = Vector([1.0, 5])
+    test_vector_1 = Vector([0, 0, 0])
+    test_vector_2 = Vector([1.0, 5, 3])
+    dist = Vector.distance(test_vector_1, test_vector_2)
     print(test_vector_1)
-    test_vector_3 = test_vector_1 + test_vector_2
-    print(test_vector_3)
-    print(test_vector_3.x)
-    test_vector_3 += Vector([5.2, 6])
-    print(test_vector_3)
+    print(test_vector_2)
+    print(dist)
