@@ -14,6 +14,7 @@ class Vector(object):
         if numbers_list is not None:
             self._numpy_array = np.asarray(numbers_list)
 
+    # --------------------------- Class Methods -----------------------------------
     @classmethod
     def from_numpy_array(cls, numpy_array):
         """
@@ -44,7 +45,7 @@ class Vector(object):
         dist = np.linalg.norm(vector_1.numpy_array - vector_2.numpy_array)
         return dist
 
-    #--------------------------- Properties -----------------------------------
+    # --------------------------- Properties -----------------------------------
     @property
     def numpy_array(self):
         """
@@ -127,6 +128,7 @@ class Vector(object):
         """
         self._numpy_array[2] = value
 
+    # --------------------------- Overrides -----------------------------------
     def __add__(self, other):
         """
 
