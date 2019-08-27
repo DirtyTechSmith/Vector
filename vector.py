@@ -1,5 +1,6 @@
 import numpy as np
 from collections.abc import Iterable
+from numbers import Number
 
 
 class Vector(object):
@@ -31,6 +32,7 @@ class Vector(object):
     @classmethod
     def distance(cls, vector_1, vector_2):
         """
+        get the euclidean distance between two vectors
 
         Args:
             vector_1 (Vector):
@@ -42,6 +44,7 @@ class Vector(object):
         dist = np.linalg.norm(vector_1.numpy_array - vector_2.numpy_array)
         return dist
 
+    #--------------------------- Properties -----------------------------------
     @property
     def numpy_array(self):
         """
@@ -150,6 +153,68 @@ class Vector(object):
         self.numpy_array = new_array
         return self
 
+    def __sub__(self, other):
+        """
+
+       Args:
+           other (Vector):
+
+       Returns:
+           Vector:
+       """
+        new_array = self.numpy_array - other.numpy_array
+        new_vector = Vector.from_numpy_array(new_array)
+        return new_vector
+
+    def __isub__(self, other):
+        """
+
+        Args:
+            other (Vector):
+
+        Returns:
+            Vector:
+        """
+        new_array = self.numpy_array - other.numpy_array
+        self.numpy_array = new_array
+        return self
+
+    def __mul__(self, other):
+        """
+
+        Args:
+            other (Vector or Number):
+
+        Returns:
+            Vector:
+        """
+        if isinstance(other, Number):
+            new_array = self.numpy_array * other
+
+        else:
+            new_array = self.numpy_array * other.numpy_array
+
+        new_vector = Vector.from_numpy_array(new_array)
+        return new_vector
+
+    def __imul__(self, other):
+        """
+
+        Args:
+            other (Vector or Number):
+
+        Returns:
+            Vector:
+        """
+        if isinstance(other, Number):
+            new_array = self.numpy_array * other
+
+        else:
+            new_array = self.numpy_array * other.numpy_array
+
+        self.numpy_array = new_array
+        return self
+
     def __str__(self):
         return str(self._numpy_array)
 
@@ -157,7 +222,9 @@ class Vector(object):
 if __name__ == '__main__':
     test_vector_1 = Vector([0, 0, 0])
     test_vector_2 = Vector([1.0, 5, 3])
-    dist = Vector.distance(test_vector_1, test_vector_2)
+    the_dist = Vector.distance(test_vector_1, test_vector_2)
+    test_vector_3 = test_vector_2 * 2
     print(test_vector_1)
     print(test_vector_2)
-    print(dist)
+    print(test_vector_3)
+    print(the_dist)
