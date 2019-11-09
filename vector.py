@@ -4,15 +4,13 @@ from numbers import Number
 
 
 class Vector(object):
-    def __init__(self, numbers_list=None):
+    def __init__(self, numbers_list):
         """
 
         Args:
-            numbers_list (Iterable[Number]):
+            numbers_list (list[float]):
         """
-        self._numpy_array = None
-        if numbers_list is not None:
-            self._numpy_array = np.asarray(numbers_list)
+        self.float_list = numbers_list  # type: list[float]
 
     # --------------------------- Class Methods -----------------------------------
     @classmethod
@@ -25,8 +23,8 @@ class Vector(object):
         Returns:
             Vector:
         """
-        new_vector = cls()
-        new_vector.numpy_array = numpy_array
+        the_list = list(numpy_array.tolist())
+        new_vector = cls(the_list)
 
         return new_vector
 
@@ -53,83 +51,88 @@ class Vector(object):
         Returns:
             np.ndarray:
         """
-        return self._numpy_array
-
-    @numpy_array.setter
-    def numpy_array(self, array_in):
-        """
-
-        Args:
-            array_in (np.ndarray):
-
-        """
-        self._numpy_array = array_in
+        return np.array(self.float_list)
 
     @property
     def x(self):
         """
 
         Returns:
-            Number:
+            float:
         """
-        
-        return self.numpy_array[0]
+        return self.float_list[0]
 
     @x.setter
     def x(self, value):
         """
 
         Args:
-            value (Number):
+            value (float):
 
         Returns:
 
         """
-        self.numpy_array[0] = value
+
+        self.float_list[0] = value
 
     @property
     def y(self):
         """
 
         Returns:
-            Number:
+            float:
         """
-        return self._numpy_array[1]
+        return self.numpy_array.item(1)
 
     @y.setter
     def y(self, value):
         """
 
         Args:
-            value (Number):
+            value (float):
 
         Returns:
 
         """
-        self.numpy_array[1] = value
+
+        self.float_list[1] = value
 
     @property
     def z(self):
         """
 
         Returns:
-            Number:
+            float:
         """
-        return self.numpy_array[2]
+        return self.numpy_array.item(2)
 
     @z.setter
     def z(self, value):
         """
 
         Args:
-            value (Number):
+            value (float):
 
         Returns:
 
         """
-        self.numpy_array[2] = value
+
+        self.float_list[0] = value
 
     # --------------------------- Methods -----------------------------------
+
+    def normalize(self):
+        """
+        normalize the vector
+
+        """
+        norm = np.linalg.norm(self.numpy_array)
+        if norm == 0:
+            return
+
+        new_array = self.numpy_array / norm  # type: np.ndarray
+        self.float_list = list(new_array.tolist())
+
     def copy(self):
         """
         copy the current vector
@@ -137,17 +140,17 @@ class Vector(object):
         Returns:
             Vector:
         """
-        the_copy = np.copy(self.numpy_array)
-        new_vector = Vector.from_numpy_array(the_copy)
+        new_list = [value for value in self.float_list]
+        new_vector = Vector(new_list)
         return new_vector
 
     def asList(self):
         """
 
         Returns:
-            list(Number):
+            list[float]:
         """
-        return list(self.numpy_array)
+        return self.float_list
 
     # --------------------------- Overrides -----------------------------------
     def __add__(self, other):
@@ -159,8 +162,12 @@ class Vector(object):
         Returns:
             Vector:
         """
-        new_array = self.numpy_array + other.numpy_array
-        new_vector = Vector.from_numpy_array(new_array)
+        new_list = []
+        for my_value, other_value in zip(self.float_list, other.float_list):
+            new_value = my_value + other_value
+            new_list.append(new_value)
+
+        new_vector = Vector(new_list)
         return new_vector
 
     def __iadd__(self, other):
@@ -172,8 +179,12 @@ class Vector(object):
         Returns:
             Vector:
         """
-        new_array = self.numpy_array + other.numpy_array
-        self.numpy_array = new_array
+        new_list = []
+        for my_value, other_value in zip(self.float_list, other.float_list):
+            new_value = my_value + other_value
+            new_list.append(new_value)
+
+        self.float_list = new_list
         return self
 
     def __sub__(self, other):
@@ -185,8 +196,13 @@ class Vector(object):
        Returns:
            Vector:
        """
-        new_array = self.numpy_array - other.numpy_array
-        new_vector = Vector.from_numpy_array(new_array)
+        new_list = []
+        for my_value, other_value in zip(self.float_list, other.float_list):
+            new_value = my_value - other_value
+            new_list.append(new_value)
+
+        new_vector = Vector(new_list)
+
         return new_vector
 
     def __isub__(self, other):
@@ -198,8 +214,12 @@ class Vector(object):
         Returns:
             Vector:
         """
-        new_array = self.numpy_array - other.numpy_array
-        self.numpy_array = new_array
+        new_list = []
+        for my_value, other_value in zip(self.float_list, other.float_list):
+            new_value = my_value - other_value
+            new_list.append(new_value)
+
+        self.float_list = new_list
         return self
 
     def __mul__(self, other):
@@ -212,10 +232,10 @@ class Vector(object):
             Vector:
         """
         if isinstance(other, Number):
-            new_array = self.numpy_array * other
+            new_array = self.numpy_array * other  # type: np.ndarray
 
         else:
-            new_array = self.numpy_array * other.numpy_array
+            new_array = self.numpy_array * other.numpy_array  # type: np.ndarray
 
         new_vector = Vector.from_numpy_array(new_array)
         return new_vector
@@ -230,20 +250,23 @@ class Vector(object):
             Vector:
         """
         if isinstance(other, Number):
-            new_array = self.numpy_array * other
+            new_array = self.numpy_array * other  # type: np.ndarray
 
         else:
-            new_array = self.numpy_array * other.numpy_array
+            new_array = self.numpy_array * other.numpy_array  # type: np.ndarray
 
-        self.numpy_array = new_array
+        self.float_list = list(new_array.tolist())
         return self
 
     def __str__(self):
-        return str(self._numpy_array)
+        return str(f'Vector: {self.float_list}')
 
     def __iter__(self):
-        for i in self.numpy_array:
+        for i in self.float_list:
             yield i
+
+    def __len__(self):
+        return len(self.float_list)
 
 
 if __name__ == '__main__':
