@@ -72,8 +72,8 @@ class Vector(object):
         Returns:
             Number:
         """
-
-        return tuple(self._numpy_array)[0]
+        
+        return self.numpy_array[0]
 
     @x.setter
     def x(self, value):
@@ -85,7 +85,7 @@ class Vector(object):
         Returns:
 
         """
-        self._numpy_array[0] = value
+        self.numpy_array[0] = value
 
     @property
     def y(self):
@@ -94,7 +94,7 @@ class Vector(object):
         Returns:
             Number:
         """
-        return tuple(self._numpy_array)[1]
+        return self._numpy_array[1]
 
     @y.setter
     def y(self, value):
@@ -106,7 +106,7 @@ class Vector(object):
         Returns:
 
         """
-        self._numpy_array[1] = value
+        self.numpy_array[1] = value
 
     @property
     def z(self):
@@ -115,7 +115,7 @@ class Vector(object):
         Returns:
             Number:
         """
-        return tuple(self._numpy_array)[2]
+        return self.numpy_array[2]
 
     @z.setter
     def z(self, value):
@@ -127,7 +127,7 @@ class Vector(object):
         Returns:
 
         """
-        self._numpy_array[2] = value
+        self.numpy_array[2] = value
 
     # --------------------------- Methods -----------------------------------
     def copy(self):
